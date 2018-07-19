@@ -3,7 +3,7 @@ const express = require('express');
 const webpack = require('webpack');
 const config = require('./webpack.config');
 
-const host = process.env.HOST;
+const host = process.env.HOST || 'localhost';
 
 const app = express();
 const compiler = webpack(config);
