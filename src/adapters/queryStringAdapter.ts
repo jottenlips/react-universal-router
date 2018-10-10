@@ -15,7 +15,7 @@ const getUrlState = ({ route, params }) => {
             path(['document', 'location', 'search'], global)
         ),
         route,
-        params: JSON.stringify(params)
+        params: encodeURIComponent(JSON.stringify(params))
     };
 
     if (queryString.route === 'Home') {
@@ -36,7 +36,7 @@ const setRoute = action => {
 };
 
 const urldecode = str =>
-    decodeURIComponent((`${str}`).replace(/\+/g, '%20'));
+    decodeURIComponent(str);
 
 const getRoute = (initialRoute) => {
     const queryString = getQueryString(
