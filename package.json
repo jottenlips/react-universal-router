@@ -14,6 +14,10 @@
     "type": "git",
     "url": "git+https://github.com/Aloompa/react-universal-router.git"
   },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
   "author": "Aloompa",
   "license": "MIT",
   "bugs": {
