@@ -31,7 +31,7 @@ const routerReducer = (config: {
     const historyState = (config.adapter) ? 
         [initialRoute, ...config.adapter.getRoute(config.initialRoute)] :
         [initialRoute];
-
+    
     const initialState = {
         isNavigatingBack: false,
         titleCache: {},
@@ -43,13 +43,18 @@ const routerReducer = (config: {
         [SET_ROUTE]: (state, { payload }) => {
             const history = [...state.history, payload];
 
+            const noDuplicatesHistory = history.filter((route, index) => {
+                const previousRoute = history[index - 1];
+                return previousRoute === undefined || previousRoute.route !== route.route;
+            });
+            
             if (config.adapter) {
                 config.adapter.setRoute(payload);
             }
 
             return {
                 ...state,
-                history
+                history: noDuplicatesHistory
             };
         },
 
