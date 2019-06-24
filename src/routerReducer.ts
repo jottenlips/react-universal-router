@@ -31,7 +31,7 @@ const routerReducer = (config: {
     const historyState = (config.adapter) ? 
         [initialRoute, ...config.adapter.getRoute(config.initialRoute)] :
         [initialRoute];
-    
+
     const initialState = {
         isNavigatingBack: false,
         titleCache: {},
@@ -47,7 +47,7 @@ const routerReducer = (config: {
                 const previousRoute = history[index - 1];
                 return previousRoute === undefined || previousRoute.route !== route.route;
             });
-            
+
             if (config.adapter) {
                 config.adapter.setRoute(payload);
             }
