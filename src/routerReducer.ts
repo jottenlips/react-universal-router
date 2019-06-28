@@ -63,7 +63,7 @@ const routerReducer = (config: {
                 ...state,
                 isNavigating: true,
                 history,
-                destinations: [payload]
+                destinations: [...state.destinations, payload]
             };
         },
 
