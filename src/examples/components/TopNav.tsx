@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 const TopNav = props => (
+    console.log(props,'und') === undefined && !props.navbarHidden &&
     <View style={{
         width: '100%',
         height: 50,

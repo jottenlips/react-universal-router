@@ -8,6 +8,7 @@ const NAVIGATE_BACK = 'NAVIGATE_BACK';
 const NAVIGATE_BACK_COMPLETE = 'NAVIGATE_BACK_COMPLETE';
 const SET_TITLE_CACHE = 'SET_TITLE_CACHE';
 const RESET_NAVIGATION = 'RESET_NAVIGATION';
+const SET_NAVBAR_HIDDEN = 'SET_NAVBAR_HIDDEN';
 
 export const { 
     setRoute,
@@ -15,8 +16,9 @@ export const {
     navigateBack,
     navigateBackComplete,
     setTitleCache,
-    resetNavigation
-} = createActions({}, SET_ROUTE, NAVIGATE_COMPLETE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION);
+    resetNavigation,
+    setNavbarHidden
+} = createActions({}, SET_ROUTE, NAVIGATE_COMPLETE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION, SET_NAVBAR_HIDDEN);
 
 const routerReducer = (config: {
     initialRoute: string,
@@ -35,6 +37,7 @@ const routerReducer = (config: {
         [initialRoute];
 
     const initialState = {
+        navbarHidden: false,
         isNavigating: false,
         destinations: [],
         isNavigatingBack: false,
@@ -121,7 +124,15 @@ const routerReducer = (config: {
                 ...state.titleCache,
                 ...payload
             }
-        })
+        }),
+
+        [SET_NAVBAR_HIDDEN]: (state, { payload }) => {
+        console.log(state, 'statete');
+        console.log('payload', payload);
+        return({
+            ...state,
+            navbarHidden: !!payload
+        })}
         
     }, initialState);
 
