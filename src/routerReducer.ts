@@ -126,13 +126,10 @@ const routerReducer = (config: {
             }
         }),
 
-        [SET_NAVBAR_HIDDEN]: (state, { payload }) => {
-        console.log(state, 'statete');
-        console.log('payload', payload);
-        return({
+        [SET_NAVBAR_HIDDEN]: (state, { payload }) => ({
             ...state,
             navbarHidden: !!payload
-        })}
+        })
         
     }, initialState);
 
