@@ -220,14 +220,14 @@ const setInitialPositions = props => {
     });
 };
 
-const createRoutes = (config, props) => {
+const createRoutes = (config) => {
     
     Object.keys(config.routes).forEach(key => {
         const title = config.routes[key].getTitle();
         if (!title) {
             config.routes[key] = {
                 ...config.routes[key],
-                getTitle: (props) => (path(['route', 'params', 'navigationTitle'], props) || props.title)
+                getTitle: (props) => (props.title || path(['route', 'params', 'navigationTitle'], props))
             };
         }
     });
@@ -240,7 +240,7 @@ const createRoutes = (config, props) => {
             ...config
         }),
         withState('routes', 'setRoutes', initializeRoutes(config.routes)),
-        withState('title', 'setTitle', ' '),
+        withState('title', 'setTitle', ''),
         componentDidUpdate(doUpdate),
         componentDidMount(setInitialPositions)
     )(Router);
