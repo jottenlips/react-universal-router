@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Animated, Dimensions, Easing, View } from 'react-native';
-import { always, curry, equals, ifElse, negate } from 'ramda';
+import { always, curry, equals, ifElse, negate, path } from 'ramda';
 import { componentDidMount, componentDidUpdate } from 'react-functional-lifecycle';
 import { compose, withProps, withState } from 'recompose';
 
@@ -220,14 +220,14 @@ const setInitialPositions = props => {
     });
 };
 
-const createRoutes = config => {
+const createRoutes = (config, props) => {
     
     Object.keys(config.routes).forEach(key => {
         const title = config.routes[key].getTitle();
-        if(!title){
+        if (!title) {
             config.routes[key] = {
                 ...config.routes[key],
-                getTitle: always(' ')
+                getTitle: (props) => (path(['route', 'params', 'navigationTitle'], props) || props.title)
             };
         }
     });
@@ -240,6 +240,7 @@ const createRoutes = config => {
             ...config
         }),
         withState('routes', 'setRoutes', initializeRoutes(config.routes)),
+        withState('title', 'setTitle', ' '),
         componentDidUpdate(doUpdate),
         componentDidMount(setInitialPositions)
     )(Router);
