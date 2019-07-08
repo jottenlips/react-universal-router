@@ -223,11 +223,10 @@ const setInitialPositions = props => {
 const createRoutes = (config) => {
     
     Object.keys(config.routes).forEach(key => {
-        const title = config.routes[key].getTitle();
-        if (!title) {
+        if (!config.routes[key].getTitle) {
             config.routes[key] = {
                 ...config.routes[key],
-                getTitle: (props) => (props.title || path(['route', 'params', 'navigationTitle'], props))
+                getTitle: path(['route', 'params', 'navigationTitle'])
             };
         }
     });
@@ -240,7 +239,6 @@ const createRoutes = (config) => {
             ...config
         }),
         withState('routes', 'setRoutes', initializeRoutes(config.routes)),
-        withState('title', 'setTitle', ''),
         componentDidUpdate(doUpdate),
         componentDidMount(setInitialPositions)
     )(Router);
