@@ -1,6 +1,93 @@
 ## React Universal Router
 
 
+### Create Route Redux Store
+
+```
+import { combineReducers } from 'redux';
+import { createStore } from 'redux';
+import queryStringAdapter from '@aloompa/react-universal-router/lib/adapters/queryStringAdapter';
+import { routerReducer } from '@aloompa/react-universal-router/lib';
+
+const combinedReducers = combineReducers({
+    router: routerReducer({
+        initialRoute: 'Home',
+        adapter: queryStringAdapter
+    })
+});
+
+const store = createStore(combinedReducers);
+
+export default store; 
+```
+
+### Define your routes
+
+```
+import { createRoutes, withRouter } from '@aloompa/react-universal-router/lib';
+
+const Routes = createRoutes({
+    routes: {
+        Home: {
+            route: Component,
+            getTitle: () => 'Home'
+        },
+        AnotherRoute: {
+            route: AnotherComponent,
+            getTitle: () => 'Another Page'
+        },
+        ModalRoute: {
+            route: ModalComponent,
+            getTitle: () => 'Modal Page',
+            mode: 'modal'
+        }
+    },
+    renderTopNav: NavComponent
+});
+
+export default withRouter(Routes);
+```
+
+### Add them to your root
+
+```
+import * as React from 'react';
+
+import { Provider } from 'react-redux'
+import Routes from './Routes';
+import store from './store';
+
+const App = () => (
+    <Provider store={store}>
+        <Routes />
+    </Provider>
+);
+```
+
+### Push View
+
+```
+props.setRoute({
+    route: 'AnotherRoute',
+    params: {}
+});
+```
+
+```
+props.setRoute({
+    route: 'AnotherRoute',
+    params: {
+        navigationTitle: 'Some Navigation Title'
+    }
+});
+```
+>- pushing a view with a specific title
+
+### Pop View
+
+`props.navigateBack();`
+
+
 ## Contributing
 
 We encourage you to contribute to React Universal Router by submitting bug reports and pull requests through [Github](http//github.com).
