@@ -37,7 +37,6 @@ const getTitleFromCache = curry((props: any, currentRoute: any) => {
                 ...props.titleCache,
                 [cacheKey]: titleResponse
             });
-// curry(path(['route', 'params', 'navigationTitle']))
         // Set the title asyncronously
         } else {
             props.setTitleCache({
