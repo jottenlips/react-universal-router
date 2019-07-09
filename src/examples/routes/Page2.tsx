@@ -40,7 +40,7 @@ export default compose(
         nextPage: props => _e => {
             props.setRoute({
                 route: 'Page3',
-                navigationTitle: "new pageeeee"
+                navigationTitle: "Page 3"
             });
         }
     })
