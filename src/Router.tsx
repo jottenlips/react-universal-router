@@ -231,7 +231,7 @@ const createRoutes = (config) => {
         if (!config.routes[key].getTitle) {
             config.routes[key] = {
                 ...config.routes[key],
-                getTitle: () => ' '
+                getTitle: always(' ')
             };
         }
     });
