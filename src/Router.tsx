@@ -14,10 +14,8 @@ const getTitleFromCache = curry((props: any, currentRoute: any) => {
     const cacheKey = JSON.stringify(currentRoute);
 
     const dynamicTitle = path(['route', 'navigationTitle'], props)
-    console.log('hey1', dynamicTitle)
 
     if (dynamicTitle) {
-        console.log('hey', dynamicTitle)
         return dynamicTitle;
     }
 
@@ -63,7 +61,6 @@ const getTitle = props => {
     if (!props.history.length) {
         return;
     }
-    console.log(props, 'hey2')
     
     const history = props.history.filter(route => 
         props.routes[route.route] &&
