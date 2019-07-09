@@ -36,6 +36,7 @@ const Routes = createRoutes({
             route: AnotherComponent,
             getTitle: () => 'Another Page'
         },
+        // routes with modal as the mode don't get added to the history stack.
         ModalRoute: {
             route: ModalComponent,
             getTitle: () => 'Modal Page',
