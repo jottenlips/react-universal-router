@@ -3,18 +3,22 @@ import { createActions, handleActions } from 'redux-actions';
 import { last } from 'ramda';
 
 const SET_ROUTE = 'SET_ROUTE';
+const NAVIGATE_COMPLETE = 'NAVIGATE_COMPLETE';
 const NAVIGATE_BACK = 'NAVIGATE_BACK';
 const NAVIGATE_BACK_COMPLETE = 'NAVIGATE_BACK_COMPLETE';
 const SET_TITLE_CACHE = 'SET_TITLE_CACHE';
 const RESET_NAVIGATION = 'RESET_NAVIGATION';
+const SET_NAVBAR_HIDDEN = 'SET_NAVBAR_HIDDEN';
 
 export const { 
     setRoute,
+    navigateComplete,
     navigateBack,
     navigateBackComplete,
     setTitleCache,
-    resetNavigation
-} = createActions({}, SET_ROUTE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION);
+    resetNavigation,
+    setNavbarHidden
+} = createActions({}, SET_ROUTE, NAVIGATE_COMPLETE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION, SET_NAVBAR_HIDDEN);
 
 const routerReducer = (config: {
     initialRoute: string,
@@ -33,6 +37,9 @@ const routerReducer = (config: {
         [initialRoute];
 
     const initialState = {
+        navbarHidden: false,
+        isNavigating: false,
+        destinations: [],
         isNavigatingBack: false,
         titleCache: {},
         history: historyState
@@ -41,16 +48,46 @@ const routerReducer = (config: {
     return handleActions({
 
         [SET_ROUTE]: (state, { payload }) => {
+            if (state.isNavigating) {
+                return (
+                    state.destinations.find(({ route }) => route == payload.route) === undefined
+                    ? { ...state, destinations: [...state.destinations, payload] }
+                    : state
+                );
+            }
+
             const history = [...state.history, payload];
 
             if (config.adapter) {
                 config.adapter.setRoute(payload);
             }
-
+            
             return {
                 ...state,
-                history
+                isNavigating: true,
+                history,
+                destinations: [...state.destinations, payload]
             };
+        },
+
+        [NAVIGATE_COMPLETE]: (state) => {
+            const newDestinations = state.destinations.slice(1);
+            if (state.destinations.length > 1 && config.adapter) {
+                config.adapter.setRoute(newDestinations[0]);
+
+                return ({
+                    ...state,
+                    isNavigating: false,
+                    history: [...state.history, newDestinations[0]],
+                    destinations: newDestinations
+                });
+            }
+
+            return ({
+                ...state,
+                isNavigating: false,
+                destinations: newDestinations
+            });
         },
 
         [RESET_NAVIGATION]: (state) => ({
@@ -87,6 +124,11 @@ const routerReducer = (config: {
                 ...state.titleCache,
                 ...payload
             }
+        }),
+
+        [SET_NAVBAR_HIDDEN]: (state, { payload }) => ({
+            ...state,
+            navbarHidden: payload
         })
         
     }, initialState);
