@@ -88,6 +88,15 @@ props.setRoute({
 
 `props.navigateBack();`
 
+### Example 
+
+>- `clone git@github.com:Aloompa/react-universal-router.git`
+
+>- `yarn run server`
+
+>- navigate to http://localhost:3001
+
+[Open example project](https://github.com/Aloompa/react-universal-router/tree/master/src/examples)
 
 ## Contributing
 
