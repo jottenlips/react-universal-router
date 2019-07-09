@@ -13,6 +13,14 @@ import withRouter from './withRouter';
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
     const cacheKey = JSON.stringify(currentRoute);
 
+    const dynamicTitle = path(['route', 'navigationTitle'], props)
+    console.log('hey1', dynamicTitle)
+
+    if (dynamicTitle) {
+        console.log('hey', dynamicTitle)
+        return dynamicTitle;
+    }
+
     if (props.titleCache[cacheKey]) {
         return props.titleCache[cacheKey];
     }
@@ -31,7 +39,7 @@ const getTitleFromCache = curry((props: any, currentRoute: any) => {
                 ...props.titleCache,
                 [cacheKey]: titleResponse
             });
-
+// curry(path(['route', 'params', 'navigationTitle']))
         // Set the title asyncronously
         } else {
             props.setTitleCache({
@@ -55,6 +63,7 @@ const getTitle = props => {
     if (!props.history.length) {
         return;
     }
+    console.log(props, 'hey2')
     
     const history = props.history.filter(route => 
         props.routes[route.route] &&
@@ -226,7 +235,7 @@ const createRoutes = (config) => {
         if (!config.routes[key].getTitle) {
             config.routes[key] = {
                 ...config.routes[key],
-                getTitle: path(['route', 'params', 'navigationTitle'])
+                getTitle: () => ' '
             };
         }
     });
