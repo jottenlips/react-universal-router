@@ -228,7 +228,7 @@ const setInitialPositions = props => {
 const createRoutes = (config) => {
     
     Object.keys(config.routes).forEach(key => {
-        if (!config.routes[key].getTitle) {
+        if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
             config.routes[key] = {
                 ...config.routes[key],
                 getTitle: always(' ')
